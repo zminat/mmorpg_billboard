@@ -46,8 +46,12 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
-
     'billboard',
+    'accounts',
+    'bootstrap4',
+    # 'ckeditor',
+    # 'ckeditor_uploader',
+
 ]
 
 MIDDLEWARE = [
@@ -84,7 +88,9 @@ TEMPLATES = [
     },
 ]
 
+
 SITE_ID = 1
+
 
 WSGI_APPLICATION = 'mmorpg.wsgi.application'
 
@@ -135,6 +141,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_ROOT = 'media/'
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -158,3 +167,56 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'width': '100%',
+#         'height': 600,
+#         'toolbar': 'Custom',
+#         'extraPlugins': ','.join([
+#             'codesnippet',
+#             'youtube'
+#         ]),
+#         'toolbar_Custom': [
+#             [
+#                 'Bold',
+#                 'Italic',
+#                 'Underline'
+#             ],
+#             [
+#                 'Font',
+#                 'FontSize',
+#                 'TextColor',
+#                 'BGColor'
+#             ],
+#             [
+#                 'NumberedList',
+#                 'BulletedList',
+#                 '-',
+#                 'Outdent',
+#                 'Indent',
+#                 '-',
+#                 'JustifyLeft',
+#                 'JustifyCenter',
+#                 'JustifyRight',
+#                 'JustifyBlock'
+#             ],
+#             [
+#                 'Link',
+#                 'Unlink'
+#             ],
+#             [
+#                 'RemoveFormat',
+#                 'Source',
+#                 'CodeSnippet',
+#                 'Image',
+#                 'Youtube'
+#             ]
+#         ],
+#
+#     },
+#
+# }
+#
+# CKEDITOR_UPLOAD_PATH = 'media/'
+#

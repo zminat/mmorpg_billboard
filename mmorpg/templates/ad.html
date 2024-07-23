@@ -1,0 +1,11 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Объявление
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ ad.title }}</h1>
+    <tr><h3>{% current_time '%d %b %Y' %}</h3></tr>
+    <tr>{{ ad.text }}</tr>
+{% endblock content %}

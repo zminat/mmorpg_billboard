@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+
+{% if user.is_authenticated %}
+
+{% block title %}
+{{ flatpage.title }}
+{% endblock title %}
+ 
+{% block content %}
+{{ flatpage.title }}
+    <h1>Отклики</h1>
+    <!-- Выводим отклики, только если они есть -->
+    {% if responses %}
+        {{ responses }}
+    {% else %}
+        <!-- Если откликов нет, говорим, что их нет -->
+        <h2>Еще нет ни одного отклика!</h2>
+    {% endif %}
+{% endblock content %}
+
+{% endif %}
