@@ -25,11 +25,12 @@
                 <a href="/ad/{{ ad.id }}" style="font-size: 20px;"><b>{{ ad.title }}</b></a><br>
                 <span style="font-size: 12px;"><b>Автор:  {{ ad.author }} |
                 Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.</b></span><br><br>
+                {{ ad.text|safe }}
             {% endfor %}
         </table>
     {% else %}
         <!-- Если объявлений нет, говорим, что их нет -->
-        <h2>Объявлений нет!</h2>
+        <h3>Объявлений нет!</h3>
     {% endif %}
 
 {% endblock content %}

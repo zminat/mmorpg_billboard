@@ -5,7 +5,7 @@
 <form method="post" action="{'login'}">
 {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value='Войти'>
+    <input class="btn btn-secondary" type="submit" value='Войти'>
     <input type="hidden" name="next" value="{{ next }}">
 </form>
      <a class="link" href="http://127.0.0.1:8000/accounts/signup/">Регистрация</a>

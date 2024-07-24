@@ -5,7 +5,6 @@ from .models import Ad, Response
 class AdForm(forms.ModelForm):
     class Meta:
         model = Ad
-        widgets = {'title': forms.TextInput(attrs={'size': '100'})}
         fields = ('category', 'title', 'text',)
 
     def __init__(self, *args, **kwargs):
@@ -13,6 +12,8 @@ class AdForm(forms.ModelForm):
         self.fields['category'].label = "Категория:"
         self.fields['title'].label = "Заголовок"
         self.fields['text'].label = "Текст объявления:"
+        self.fields['text'].widget.attrs.update({'class': 'form-control django_ckeditor_5'})
+        self.fields['text'].required = False
 
 
 class RespondForm(forms.ModelForm):
