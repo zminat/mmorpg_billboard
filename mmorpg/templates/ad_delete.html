@@ -1,11 +1,16 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<h1>Удалить объявление</h1>
-<hr>
-<form action="" method="post">
-    {% csrf_token %}
-    <p>Удалить "{{ object.title }}"?</p>
-    <input type="submit" value="Delete" />
-</form>
+    {% if user == ad_author %}
+        <h1>Удаление объявления</h1>
+        <hr>
+        <form action="" method="post">
+            {% csrf_token %}
+            <p>Удалить "{{ object.title }}"?</p>
+            <input type="submit" value="Удалить" />
+        </form>
+    {% else %}
+        <h3> Вы не можете удалить чужое объявление! </h3>
+    {% endif %}
 {% endblock content %}

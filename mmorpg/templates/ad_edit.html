@@ -1,12 +1,21 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-<h1> Объявление </h1>
-<hr>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.media }}
-    {{ form.as_p }}
-    <input type="submit" value='Сохранить' />
-</form>
+    {% if user == ad_author or is_url_create %}
+    {% if is_url_create %}
+        <h1> Создать объявление </h1>
+    {% else %}
+        <h1> Редактировать "{{ ad.title }}" </h1>
+    {% endif %}
+    <hr>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <input type="submit" value='Сохранить' />
+        </form>
+    {% else %}
+        <h3> Вы не можете редактировать чужие объявления! </h3>
+    {% endif %}
 {% endblock content %}

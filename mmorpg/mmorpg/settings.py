@@ -37,29 +37,33 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.contenttypes',  # Django контент-типовая система (даёт разрешения, связанные с моделями).
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
 
+    'accounts',
+    'billboard',
+
     'allauth',
     'allauth.account',
-    'billboard',
-    'accounts',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.yandex',
     'bootstrap4',
-    'django_ckeditor_5',
     'ckeditor_uploader',
-
+    'crispy_forms',
+    'django_ckeditor_5',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # Управление сессиями между запросами
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',     # Связывает пользователей, использующих сессии, запросами.
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
@@ -143,7 +147,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT= os.path.join(BASE_DIR,'static_media/')
 # STATICFILES_DIRS = [BASE_DIR / "static"]
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 # Default primary key field type
@@ -152,7 +156,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/ads/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 AUTHENTICATION_BACKENDS = [
@@ -172,6 +176,8 @@ ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
 CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = 'media/'
 CKEDITOR_FORCE_JPEG_COMPRESSION = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 customColorPalette = [
         {

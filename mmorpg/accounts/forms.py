@@ -7,18 +7,18 @@ from django.core.mail import EmailMultiAlternatives
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(label="Email")
-    first_name = forms.CharField(label="Имя")
-    last_name = forms.CharField(label="Фамилия")
-    username = forms.CharField(label='Логин')
-    password1 = forms.CharField(label='Пароль')
-    password2 = forms.CharField(label='Повторите пароль')
+    # first_name = forms.CharField(label="Имя")
+    # last_name = forms.CharField(label="Фамилия")
+    # username = forms.CharField(label='Логин')
+    # password1 = forms.CharField(label='Пароль')
+    # password2 = forms.CharField(label='Повторите пароль')
 
     class Meta:
         model = User
         fields = (
             "username",
-            "first_name",
-            "last_name",
+            # "first_name",
+            # "last_name",
             "email",
             "password1",
             "password2",
@@ -39,5 +39,4 @@ class CustomSignupForm(SignupForm):
         )
         msg.attach_alternative(html, "text/html")
         msg.send()
-
         return user

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Регистрация</h1>
+<form method="post" action="{% url 'signup' %}">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-secondary" type="submit" value="Зарегистрироваться">
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+<p><a href="/accounts/login/" class="text-muted">Войти</a></p>
+{% endblock %}

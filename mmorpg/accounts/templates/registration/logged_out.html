@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block main %}
+
+{% block content %}
+<h1>Вход</h1>
+<form method="post" action="{'logout'}">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-secondary" type="submit" value='Выйти'>
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+<a  href="{% url 'login' %}">Log in again</a>
+
+{% endblock %}
