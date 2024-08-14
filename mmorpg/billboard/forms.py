@@ -27,11 +27,11 @@ class AdForm(forms.ModelForm):
         return cleaned_data
 
 
-class RespondForm(forms.ModelForm):
+class ResponseForm(forms.ModelForm):
     class Meta:
         model = Response
         fields = ('text',)
 
     def __init__(self, *args, **kwargs):
-        super(RespondForm, self).__init__(*args, **kwargs)
+        super(ResponseForm, self).__init__(*args, **kwargs)
         self.fields['text'].label = "Текст отклика:"

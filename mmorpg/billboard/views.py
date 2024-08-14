@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,7 +14,7 @@ from django.views.generic import (
 from datetime import datetime
 
 from .filters import AdFilter, ResponseFilter
-from .forms import AdForm, RespondForm
+from .forms import AdForm, ResponseForm
 from .models import Ad, Response
 from pprint import pprint
 
@@ -65,6 +66,22 @@ class AdDetail(DetailView):
     template_name = 'ad.html'
     context_object_name = 'ad'
     pk_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super(AdDetail, self).get_context_data(**kwargs)
+        context['response_form'] = ResponseForm()
+        context['responses'] = Response.objects.filter(ad__id=self.kwargs.get('id'))
+        return context
+
+    def post(self, request, *args, **kwargs):
+        text = request.POST.get('text')
+        user = request.user
+        ad_id = request.POST.get('ad_id')
+        ad = Ad.objects.get(id=ad_id)
+        response_instance = Response(text=text, author=user, ad=ad)
+        response_instance.save()
+        messages.success(request, "Отклик отправлен")
+        return redirect(f'/ads/{ad.id}')
 
 
 class AdCreate(LoginRequiredMixin, CreateView):
@@ -153,67 +170,3 @@ class AdResponsesList(ListView):
         context['is_url_myads'] = self.request.path == '/ads/responses/'
         context['filterset'] = self.filterset
         return context
-
-
-# class ResponseCreate(CreateView):
-#     model = Response
-#     form_class = RespondForm
-#     template_name = 'add_response.html'
-#     success_url = reverse_lazy('ads/')
-#
-#     def form_valid(self, form):
-#         form.instance.post_id = self.request.user.profile
-#         return super().form_valid(form)
-#
-#     def get(self, request, *args, **kwargs):
-#         form = RespondForm(initial={'author': request.user, 'ad': kwargs['pk']})
-#         context = {'response_form': form}
-#         return render(request, 'response_edit.html', context)
-#
-# class ResponseCreate(LoginRequiredMixin, CreateView):
-#     raise_exception = True
-#     permission_required = ('billboard.add_response',)
-#     form_class = RespondForm
-#     model = Response
-#     template_name = 'response_edit.html'
-#     context_object_name = 'response'
-#
-#     def form_valid(self, form):
-#         response = form.save(commit=False)
-#         response.author = User.objects.get(id=self.request.user.id)
-#         response.save()
-#         return redirect(f'/ads/{response.id}')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['is_url_create'] = self.request.path == '/ads/response/create/'
-#         return context
-#
-#
-# class ResponseUpdate(LoginRequiredMixin, UpdateView):
-#     raise_exception = True
-#     permission_required = ('billboard.change_response',)
-#     form_class = RespondForm
-#     model = Response
-#     template_name = 'response_edit.html'
-#
-#     def form_valid(self, form):
-#         return super().form_valid(form)
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['response_author'] = Response.objects.get(pk=self.kwargs.get('pk')).author
-#         return context
-#
-#
-# class ResponseDelete(LoginRequiredMixin, DeleteView):
-#     raise_exception = True
-#     permission_required = ('billboard.delete_response',)
-#     model = Response
-#     template_name = 'response_delete.html'
-#     success_url = reverse_lazy('response_list')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['response_author'] = Response.objects.get(pk=self.kwargs.get('pk')).author
-#         return context

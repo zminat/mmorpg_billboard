@@ -18,8 +18,19 @@
             <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
                href="{% url 'ad_delete' ad.id %}" role="button">Удалить</a>
         {% else %}
-            <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
-               href="{% url 'response_edit' %}" role="button">Откликнуться</a>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="ad_id" value="{{ ad.id }}">
+                {{ response_form.as_p }}
+                <input type="submit" class="btn mt-2 btn-comments" value="Откликнуться">
+            </form>
         {% endif %}
+    {% endif %}
+    {% if responses %}
+        <table>
+            {% for response in responses %}
+                <tr><td>{{ response.text|safe }}</td></tr>
+            {% endfor %}
+        </table>
     {% endif %}
 {% endblock content %}
