@@ -14,7 +14,7 @@ from .models import Ad, Response
 #     return ResponseRequests.objects.filter(author__user=user)
 
 
-class AdFilter(django_filters.FilterSet):
+class AdFilter(FilterSet):
     # ad_category = ModelMultipleChoiceFilter(
     #     field_name='Category',
     #     queryset=Ad.category.objects.all(),
@@ -31,7 +31,7 @@ class AdFilter(django_filters.FilterSet):
 
    class Meta:
        model = Ad
-       fields = {'author', 'category', 'title', 'dateCreation'}
+       fields = {'author', 'category'}
 
 
 # class ResponseRequestsFilter(django_filters.FilterSet):
@@ -42,31 +42,13 @@ class AdFilter(django_filters.FilterSet):
 #     #     )
 #     pass
 
-# class ResponseFilter(django_filters.FilterSet):
-    # ad_category = ModelMultipleChoiceFilter(
-    #     field_name='Category',
-    #     queryset=Ad.category.objects.all(),
-    #     widget=forms.Select(attrs={'ad.category': 'form-control'}),
+class ResponseFilter(FilterSet):
+    # ad = ModelChoiceFilter(
+    #     field_name='Ad',
+    #     queryset=Ad.title.objects.all(),
     #     conjoined=False,
     # )
-    # response_author = ModelMultipleChoiceFilter(
-    #     field_name='Author',
-    #     queryset=Response.author(),
-    #     conjoined=False,
-    # )
-    # response_status = ModelChoiceFilter(
-    #     field_name='Status',
-    #     queryset=Response.status(),
-    #     conjoined=False,
-    # )
-    # creation_date_after = DateTimeFilter(
-    #     field_name='dateCreation',
-    #     lookup_expr='gt',
-    #     widget=DateTimeInput(
-    #         format='%Y-%m-%dT%H:%M',
-    #         attrs={'type': 'datetime-local'},
-    #     ),
-    # )
-   # class Meta:
-   #     model = Response
-   #     fields = {'ad', 'author'}
+
+   class Meta:
+       model = Response
+       fields = {'ad__title', 'author'}

@@ -7,5 +7,10 @@ class AdAdmin(admin.ModelAdmin):
     list_filter = ('author', 'dateCreation')
 
 
-admin.site.register(Response)
+class RespondAdmin(admin.ModelAdmin):
+    list_display = ['author', 'ad', 'dateCreation', 'status']
+    list_filter = ('status', 'dateCreation')
+    search_fields = ('author', 'text')
+
+admin.site.register(Response, RespondAdmin)
 admin.site.register(Ad, AdAdmin)

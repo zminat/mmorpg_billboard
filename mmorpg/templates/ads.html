@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% load custom_filters %}
 {% load custom_tags %}
+
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
@@ -21,19 +24,26 @@
        <input type="submit" value="Найти" />
    </form>
 
-   <hr>
     <!-- Выводим объявления, только если они есть -->
     {% if ads %}
-        {% if is_url_myads %}
-            <h3>Мои объявления</h3>
-        {% else %}
-            <table>
-                {% for ad in ads %}
+        <table>
+            {% for ad in ads %}
+                    <hr>
                     <a href="/ads/{{ ad.id }}" style="font-size: 20px;"><b>{{ ad.title }}</b></a><br>
                     <span style="font-size: 12px;"><b>Автор:  {{ ad.author }} | Категория: {{ ad.get_category_display }} |
-                    Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.</b></span><br>
-                    {{ ad.text|safe }}
-                {% endfor %}
+                    Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.
+                    {% if user.is_authenticated %}
+                         |
+                        {% if user == ad.author %}
+                            <a href="/ads/responses/" style="font-size: 12px;">Смотреть отклики</a></b></span><br>
+                        {% else %}
+                            <a href="/ads/responses/" style="font-size: 12px;">Откликнуться</a></b></span><br>
+                        {% endif %}
+                    {% else %}
+                        </b></span><br>
+                    {% endif %}
+                {{ ad.text|safe }}
+            {% endfor %}
             </table>
             <br>
 
@@ -58,7 +68,7 @@
                     <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
                 {% endif %}
             {% endif %}
-        {% endif %}
+        <script src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>
     {% else %}
         <!-- Если объявлений нет, говорим, что их нет -->
         <h3>Объявлений нет!</h3>

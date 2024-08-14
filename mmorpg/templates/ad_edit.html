@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
+
 {% load crispy_forms_tags %}
+{% load static %}
+
 
 {% block content %}
     {% if user == ad_author or is_url_create %}
@@ -9,12 +12,13 @@
         <h1> Редактировать "{{ ad.title }}" </h1>
     {% endif %}
     <hr>
-        <form method="post">
+        <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.media }}
             {{ form.as_p }}
             <input type="submit" value='Сохранить' />
         </form>
+        <script src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>
     {% else %}
         <h3> Вы не можете редактировать чужие объявления! </h3>
     {% endif %}

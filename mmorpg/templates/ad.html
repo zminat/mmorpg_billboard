@@ -12,10 +12,14 @@
         Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.</b></span><br><br></tr>
     <tr>{{ ad.text|safe }}</tr>
     {% if user.is_authenticated %}
-    <br>
-    <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
-       href="{% url 'ad_edit' pk=ad.id %}" role="button">Редактировать</a>
-    <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
-       href="{% url 'ad_delete' ad.id %}" role="button">Удалить</a>
+        {% if user == ad.author %}
+            <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
+               href="{% url 'ad_edit' pk=ad.id %}" role="button">Редактировать</a>
+            <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
+               href="{% url 'ad_delete' ad.id %}" role="button">Удалить</a>
+        {% else %}
+            <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
+               href="{% url 'response_edit' %}" role="button">Откликнуться</a>
+        {% endif %}
     {% endif %}
 {% endblock content %}
