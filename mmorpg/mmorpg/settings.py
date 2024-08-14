@@ -60,10 +60,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware', # Управление сессиями между запросами
+    # Управление сессиями между запросами
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',     # Связывает пользователей, использующих сессии, запросами.
+    # Связывает пользователей, использующих сессии, запросами.
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
@@ -145,7 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT= os.path.join(BASE_DIR,'static_media/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_media/')
 # STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
@@ -170,8 +172,27 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'user'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = ''
+EMAIL_SUBJECT_PREFIX = ''
+SERVER_EMAIL = ''
+MANAGERS = (
+    ('Ivan', ''),
+)
 
 CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = 'media/'

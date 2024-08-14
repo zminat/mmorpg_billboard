@@ -1,22 +1,26 @@
 {% extends 'base.html' %}
 
 {% block title %}
-
+{{ flatpage.title }}
 {% endblock title %}
 
 {% block content %}
-{{ flatpage.title }}
-<form action="" method="get">
-       {{ filterset.form.as_p }}
-       <input type="submit" value="Найти" />
-   </form>
+<h3>Отклики</h3>
+<!--<form action="" method="get">-->
+<!--       {{ filterset.form.as_p }}-->
+<!--       <input type="submit" value="Найти" />-->
+<!--   </form>-->
     {% if responses %}
-    <h1>{{ ad.title }}</h1>
-    <tr><span style="font-size: 12px;">
-        <b>Автор:  {{ ad.author }} | Категория: {{ ad.get_category_display }} |
-                Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.</b></span><br><br></tr>
-    {{ status|default_if_none:"Решение еще не принято." }}
-    <tr>{{ ad.text|safe }}</tr>
+        <table>
+            {% for response in responses %}
+                <hr>
+                <span style="font-size: 12px;"><b>{{ response.get_status_display }}  |
+                Объявление: {{ ad.title }} | <a href="/ads/{{ ad.id }}"> Принять </a> <a href="/ads/{{ ad.id }}"> Отклонить </a></b></span>
+                <br>
+            <p align="left"><u>{{ response.author }}</u>: {{ response.text|safe }}</p>
+            {% endfor %}
+        </table>
+<!--{{ status|default_if_none:"Решение еще не принято." }}-->
     {% else %}
         <!-- Если откликов нет, говорим, что их нет -->
         <h3>Откликов еще нет!</h3>

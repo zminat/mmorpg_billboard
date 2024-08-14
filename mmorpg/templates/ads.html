@@ -37,7 +37,7 @@
                         {% if user == ad.author %}
                             <a href="/ads/responses/" style="font-size: 12px;">Смотреть отклики</a></b></span><br>
                         {% else %}
-                            <a href="/ads/responses/" style="font-size: 12px;">Откликнуться</a></b></span><br>
+                            <a href="/ads/{{ ad.id }}" style="font-size: 12px;">Откликнуться</a></b></span><br>
                         {% endif %}
                     {% else %}
                         </b></span><br>
