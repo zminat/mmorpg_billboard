@@ -76,11 +76,10 @@ class AdDetail(DetailView):
 
     def post(self, request, *args, **kwargs):
         text = request.POST.get('text')
-        user = request.user
+        responder = request.user
         ad_id = request.POST.get('ad_id')
         ad = Ad.objects.get(id=ad_id)
-        response_instance = Response(text=text, author=user, ad=ad)
-        response_instance.save()
+        Response.objects.create(text=text, author=responder, ad=ad)
 
         email_subject = 'Получен новый отклик!'
         email_text = f'{ad.author.username}, кто-то откликнулся на Ваше объявление'
@@ -88,21 +87,21 @@ class AdDetail(DetailView):
             subject=email_subject, body=email_text, from_email=None, to=[ad.author.email]
         )
         html = (
-            f'<b>{user.username}</b> откликнулся на объявление "{ad.title}".'
+            f'<b>{responder.username}</b> откликнулся на объявление "{ad.title}".'
             f'Принять или отклонить отклик Вы можете по <a href="http://{request.get_host()}/ads/responses">ссылке</a>.'
         )
         email_msg.attach_alternative(html, "text/html")
         email_msg.send()
 
         email_subject = 'Отклик отправлен!'
-        email_text = (f'{user.username}, Ваш отклик отправлен автору поста. Когда отклик будет одобрен, на Вашу почту прийдет '
-                f'уведомление об этом.')
+        email_text = (f'{responder.username}, Вы оставили отклик на объявление "{ad.title}". '
+                      f'Когда автор объявления примет решение, Вы получите письмо о статусе отклика.')
         email_msg = EmailMultiAlternatives(
-            subject=email_subject, body=email_text, from_email=None, to=[user.email]
+            subject=email_subject, body=email_text, from_email=None, to=[responder.email]
         )
         email_msg.send()
 
-        return redirect(f'/ads/{ad.id}')
+        return redirect('ad_detail', id=ad.id)
 
 
 class AdCreate(LoginRequiredMixin, CreateView):
@@ -117,7 +116,7 @@ class AdCreate(LoginRequiredMixin, CreateView):
         ad = form.save(commit=False)
         ad.author = User.objects.get(id=self.request.user.id)
         ad.save()
-        return redirect(f'/ads/{ad.id}')
+        return redirect('ad_detail', id=ad.id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -191,6 +190,31 @@ class AdResponsesList(ListView):
         context['is_url_myads'] = self.request.path == '/ads/responses/'
         context['filterset'] = self.filterset
         return context
+
+
+@login_required
+@csrf_protect
+def response_handle(request):
+    action = request.POST.get('action')
+    if action == 'accept':
+        response_id = request.POST.get('response_id')
+        response = Response.objects.get(id=response_id)
+        response.status = True
+        response.save()
+        responder = response.author
+        ad = response.ad
+        email_subject = 'Отклик принят!'
+        email_text = f'Поздравляем! Ваш отклик на объявление "{ad.title}" был одобрен!'
+        email_msg = EmailMultiAlternatives(
+            subject=email_subject, body=email_text, from_email=None, to=[responder.email]
+        )
+        email_msg.send()
+
+    elif action == 'delete':
+        response_id = request.POST.get('response_id')
+        Response.objects.filter(id=response_id).delete()
+
+    return redirect('responses')
 
 
 @login_required

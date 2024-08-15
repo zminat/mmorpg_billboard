@@ -6,21 +6,39 @@
 
 {% block content %}
 <h3>Отклики</h3>
-<!--<form action="" method="get">-->
-<!--       {{ filterset.form.as_p }}-->
-<!--       <input type="submit" value="Найти" />-->
-<!--   </form>-->
+<form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
     {% if responses %}
-        <table>
-            {% for response in responses %}
-                <hr>
-                <span style="font-size: 12px;"><b>{{ response.get_status_display }}  |
-                Объявление: {{ response.ad.title }} | Автор объявления: {{ response.ad.author }} | <a href="/ads/{{ ad.id }}"> Принять </a> <a href="/ads/{{ ad.id }}"> Отклонить </a></b></span>
-                <br>
-            <p align="left"><b>{{ response.author }}</b>: {{ response.text|safe }}</p>
-            {% endfor %}
-        </table>
-<!--{{ status|default_if_none:"Решение еще не принято." }}-->
+        <p style="font-size: 26px;" align="left" ><b>Отклики</b></p>
+        {% for response in responses %}
+            <hr>
+            <form action="{% url 'response_handle' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="response_id" value="{{ response.id }}">
+                <table>
+                    <tr>
+                        <td width="200px">
+                            <span style="font-size: 12px;"><b>Объявление: {{ response.ad.title }}
+                            <br>Автор: {{ response.ad.author }}</b></span>
+                            <br>
+                            {% if response.status == True %}
+                                <span style="font-size: 12px;"><b>Статус: принят</b></span>
+                            {% else %}
+                                <span style="font-size: 12px;"><b>Статус: на рассмотрении</b></span><br>
+                                <br>
+                                <button type="submit" class="btn btn-success btn-sm" name="action" value="accept">Принять</button>
+                                <button type="submit" class="btn btn-danger btn-sm" name="action" value="delete">Удалить</button>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <p align="left"><b>  {{ response.author }}</b>: {{ response.text|safe }}</p>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        {% endfor %}
     {% else %}
         <!-- Если откликов нет, говорим, что их нет -->
         <h3>Откликов еще нет!</h3>
