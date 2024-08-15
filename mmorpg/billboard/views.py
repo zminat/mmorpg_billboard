@@ -1,7 +1,8 @@
-from django.contrib import messages
+from allauth.account.views import email
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import EmailMultiAlternatives
 from django.db.models import Exists, OuterRef
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
@@ -15,7 +16,7 @@ from datetime import datetime
 
 from .filters import AdFilter, ResponseFilter
 from .forms import AdForm, ResponseForm
-from .models import Ad, Response
+from .models import Ad, Response, Subscription
 from pprint import pprint
 
 
@@ -45,7 +46,7 @@ class MyAdsList(LoginRequiredMixin, ListView):
     model = Ad
     ordering = '-dateCreation'
     template_name = 'ads.html'
-    context_object_name = 'my_ads'
+    context_object_name = 'ads'
     paginate_by = 10
 
     def get_queryset(self):
@@ -80,7 +81,27 @@ class AdDetail(DetailView):
         ad = Ad.objects.get(id=ad_id)
         response_instance = Response(text=text, author=user, ad=ad)
         response_instance.save()
-        messages.success(request, "Отклик отправлен")
+
+        email_subject = 'Получен новый отклик!'
+        email_text = f'{ad.author.username}, кто-то откликнулся на Ваше объявление'
+        email_msg = EmailMultiAlternatives(
+            subject=email_subject, body=email_text, from_email=None, to=[ad.author.email]
+        )
+        html = (
+            f'<b>{user.username}</b> откликнулся на объявление "{ad.title}".'
+            f'Принять или отклонить отклик Вы можете по <a href="http://{request.get_host()}/ads/responses">ссылке</a>.'
+        )
+        email_msg.attach_alternative(html, "text/html")
+        email_msg.send()
+
+        email_subject = 'Отклик отправлен!'
+        email_text = (f'{user.username}, Ваш отклик отправлен автору поста. Когда отклик будет одобрен, на Вашу почту прийдет '
+                f'уведомление об этом.')
+        email_msg = EmailMultiAlternatives(
+            subject=email_subject, body=email_text, from_email=None, to=[user.email]
+        )
+        email_msg.send()
+
         return redirect(f'/ads/{ad.id}')
 
 
@@ -170,3 +191,18 @@ class AdResponsesList(ListView):
         context['is_url_myads'] = self.request.path == '/ads/responses/'
         context['filterset'] = self.filterset
         return context
+
+
+@login_required
+@csrf_protect
+def subscriptions(request):
+    user_subscribed = Subscription.objects.filter(user=request.user).count() != 0
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'subscribe':
+            Subscription.objects.create(user=request.user)
+            user_subscribed = True
+        elif action == 'unsubscribe':
+            Subscription.objects.filter(user=request.user).delete()
+            user_subscribed = False
+    return render(request, 'subscriptions.html', {'user_subscribed': user_subscribed})

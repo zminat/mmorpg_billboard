@@ -53,3 +53,7 @@ class Response(models.Model):
     class Meta:
         verbose_name = 'Отклик'
         verbose_name_plural = 'Отклики'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
