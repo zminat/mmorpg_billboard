@@ -4,6 +4,13 @@
 
 {% block content %}
 <h1>Вход</h1>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
     {{ form.as_p }}

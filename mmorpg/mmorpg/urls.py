@@ -24,12 +24,9 @@ from mmorpg.views import upload_file
 
 urlpatterns = (([
     path('ckeditor5/', include('django_ckeditor_5.urls')),
-    path("image_upload/", upload_file, name="ck_editor_5_upload_file"),
+    path('image_upload/', upload_file, name="ck_editor_5_upload_file"),
     path('admin/', admin.site.urls),
-    # path("accounts/", include("django.contrib.auth.urls")),
-    path("accounts/", include("allauth.urls")),
     path("accounts/", include("accounts.urls")),
-    # path('pages/', include('django.contrib.flatpages.urls')),
     path('ads/', include('billboard.urls')),
     path('', lambda request: redirect('ads/', permanent=False)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
