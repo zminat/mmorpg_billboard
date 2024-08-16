@@ -140,14 +140,12 @@ class MyResponsesList(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        self.filterset = ResponseFilter(self.request.GET, queryset)
+        queryset = Response.objects.filter(ad__author__id=self.request.user.id)
+        self.filterset = ResponseFilter(self.request.GET, queryset, author_id=self.request.user.id)
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['responses'] = Response.objects.filter(ad__author__id=self.request.user.id)
-        context['is_url_myads'] = self.request.path == '/ads/responses/'
         context['filterset'] = self.filterset
         return context
 
