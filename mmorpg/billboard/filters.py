@@ -17,7 +17,7 @@ class ResponseFilter(FilterSet):
         empty_label='все объявления',
         field_name='ad',
         queryset=Ad.objects.none(),
-        label='Поиск по объявлению'
+        label='Отклики на объявление'
     )
 
     class Meta:

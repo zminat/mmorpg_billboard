@@ -55,27 +55,6 @@ class AdDetail(DetailView):
         ad_id = request.POST.get('ad_id')
         ad = Ad.objects.get(id=ad_id)
         Response.objects.create(text=text, author=responder, ad=ad)
-
-        email_subject = 'Получен новый отклик!'
-        email_text = f'{ad.author.username}, кто-то откликнулся на Ваше объявление'
-        email_msg = EmailMultiAlternatives(
-            subject=email_subject, body=email_text, from_email=None, to=[ad.author.email]
-        )
-        html = (
-            f'<b>{responder.username}</b> откликнулся на объявление "{ad.title}".'
-            f'Принять или отклонить отклик Вы можете по <a href="http://{request.get_host()}/ads/responses">ссылке</a>.'
-        )
-        email_msg.attach_alternative(html, "text/html")
-        email_msg.send()
-
-        email_subject = 'Отклик отправлен!'
-        email_text = (f'{responder.username}, Вы оставили отклик на объявление "{ad.title}". '
-                      f'Когда автор объявления примет решение, Вы получите письмо о статусе отклика.')
-        email_msg = EmailMultiAlternatives(
-            subject=email_subject, body=email_text, from_email=None, to=[responder.email]
-        )
-        email_msg.send()
-
         return redirect('ad_detail', id=ad.id)
 
 
@@ -156,14 +135,6 @@ def response_handle(request):
         response = Response.objects.get(id=response_id)
         response.status = True
         response.save()
-        responder = response.author
-        ad = response.ad
-        email_subject = 'Отклик принят!'
-        email_text = f'Поздравляем! Ваш отклик на объявление "{ad.title}" был одобрен!'
-        email_msg = EmailMultiAlternatives(
-            subject=email_subject, body=email_text, from_email=None, to=[responder.email]
-        )
-        email_msg.send()
 
     elif action == 'delete':
         response_id = request.POST.get('response_id')

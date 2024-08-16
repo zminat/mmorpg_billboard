@@ -1,16 +1,40 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.mail import send_mail
-from django.contrib.auth.models import User
+from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse
+from billboard.models import Response
 
 
-@receiver(pre_save, sender=User)
-def my_handler(sender, instance, created, **kwargs):
-    mail = instance.article.author.email
-    send_mail(
-        'Subject here'
-        'Here is the message'
-        'host@mail.ru',
-        [mail],
-        fail_silently=False,
-    )
+@receiver(post_save, sender=Response)
+def send_mail_on_response(sender, instance, created, **kwargs):
+    responder = instance.author
+    ad = instance.ad
+    if created:
+        subject = 'Получен новый отклик!'
+        text = f'{ad.author.username}, кто-то откликнулся на Ваше объявление'
+        msg = EmailMultiAlternatives(
+            subject=subject, body=text, from_email=None, to=[ad.author.email]
+        )
+        responses_link = reverse('responses')
+        html = (
+            f'<b>{responder.username}</b> откликнулся на объявление "{ad.title}".'
+            f'Принять или отклонить отклик Вы можете по <a href="{responses_link}">ссылке</a>.'
+        )
+        msg.attach_alternative(html, "text/html")
+        msg.send()
+
+        subject = 'Отклик отправлен!'
+        text = (f'{responder.username}, Вы оставили отклик на объявление "{ad.title}". '
+                      f'Когда автор объявления примет решение, Вы получите письмо о статусе отклика.')
+        msg = EmailMultiAlternatives(
+            subject=subject, body=text, from_email=None, to=[responder.email]
+        )
+        msg.send()
+
+    if instance.status:
+        subject = 'Отклик принят!'
+        text = f'Поздравляем! Ваш отклик на объявление "{ad.title}" был принят!'
+        msg = EmailMultiAlternatives(
+            subject=subject, body=text, from_email=None, to=[responder.email]
+        )
+        msg.send()

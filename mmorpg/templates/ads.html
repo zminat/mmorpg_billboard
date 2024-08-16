@@ -29,15 +29,15 @@
         <table>
             {% for ad in ads %}
                     <hr>
-                    <a href="/ads/{{ ad.id }}" style="font-size: 20px;"><b>{{ ad.title }}</b></a><br>
+                    <a href="{% url 'ad_detail' id=ad.id %}" style="font-size: 20px;"><b>{{ ad.title }}</b></a><br>
                     <span style="font-size: 12px;"><b>Автор:  {{ ad.author }} | Категория: {{ ad.get_category_display }} |
                     Дата публикации: {{ ad.dateCreation|date:'DATETIME_FORMAT' }}
                     {% if user.is_authenticated %}
                          |
                         {% if user == ad.author %}
-                            <a href="/ads/responses/" style="font-size: 12px;">Смотреть отклики</a></b></span><br>
+                            <a href="{% url 'responses' %}?ad={{ ad.id }}" style="font-size: 12px;">Смотреть отклики</a></b></span><br>
                         {% else %}
-                            <a href="/ads/{{ ad.id }}" style="font-size: 12px;">Откликнуться</a></b></span><br>
+                            <a href="{% url 'ad_detail' id=ad.id %}" style="font-size: 12px;">Откликнуться</a></b></span><br>
                         {% endif %}
                     {% else %}
                         </b></span><br>
