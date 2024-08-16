@@ -275,3 +275,5 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
+
+CKEDITOR_5_UPLOAD_FILE_TYPES = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff"]

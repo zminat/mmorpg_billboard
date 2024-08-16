@@ -1,12 +1,9 @@
-from allauth.account.views import email
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import EmailMultiAlternatives
-from django.db.models import Exists, OuterRef
-from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import (
     ListView, DetailView, CreateView,

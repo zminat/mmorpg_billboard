@@ -20,8 +20,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = ([
+from mmorpg.views import upload_file
+
+urlpatterns = (([
     path('ckeditor5/', include('django_ckeditor_5.urls')),
+    path("image_upload/", upload_file, name="ck_editor_5_upload_file"),
     path('admin/', admin.site.urls),
     # path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/", include("allauth.urls")),
@@ -30,3 +33,4 @@ urlpatterns = ([
     path('ads/', include('billboard.urls')),
     path('', lambda request: redirect('ads/', permanent=False)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+               + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))

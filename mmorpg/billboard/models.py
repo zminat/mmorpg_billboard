@@ -21,8 +21,7 @@ class Ad(models.Model):
     category = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='TA', verbose_name='Категория')
     dateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     title = models.CharField(max_length=256, verbose_name='Заголовок')
-    text = CKEditor5Field(verbose_name='Текст', config_name='extends', null=True, blank=True)
-    # upload = models.FileField(upload_to='uploads/', null=True, blank=True)
+    text = CKEditor5Field(verbose_name='Текст', config_name='extends', blank=True)
 
     def __str__(self):
         return f'{self.title}'
