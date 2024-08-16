@@ -7,8 +7,8 @@ from .models import Ad, Response
 class AdForm(forms.ModelForm):
     class Meta:
         model = Ad
-        fields = ('author', 'category', 'title', 'text',)
-        exclude = ['dateCreation']
+        fields = ('category', 'title', 'text',)
+        exclude = ['author', 'dateCreation']
 
     def __init__(self, *args, **kwargs):
         super(AdForm, self).__init__(*args, **kwargs)
