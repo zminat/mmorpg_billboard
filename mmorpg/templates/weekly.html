@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Новостная рассылка.</title>
+</head>
+<body>
+<h2> Здравствуйте! Посмотрите объявления опубликованные на прошедшей неделе.</h2>
+<ul>
+    {% for ad in ads %}
+    <li><a href="{{ link }}{{ad.get_absolute_url}}">{{ ad.title }}</a></li>
+    {% endfor %}
+</ul>
+</body>
+</html>

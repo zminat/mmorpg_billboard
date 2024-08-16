@@ -8,8 +8,8 @@
     <form method="post">
         {% csrf_token %}
         {% if user_subscribed %}
-            <br>Вы подписаны на нашу новостную рассылку.
-            <br>Если Вы больше не хотите ее получать, то нажмите на кнопку.
+            <br>
+            Вы подписаны на нашу новостную рассылку.
             <br><br>
             <button class="btn btn-secondary bg-light text-secondary mr-sm-2" name="action" value="unsubscribe">Отписаться</button>
         {% else %}
