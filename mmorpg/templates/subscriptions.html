@@ -5,26 +5,19 @@
 {% endblock title %}
 
 {% block content %}
-    <h3>Новости</h3>
-
     <form method="post">
         {% csrf_token %}
         {% if user_subscribed %}
-            <button class="btn btn-secondary bg-light text-secondary mr-sm-2" disabled>Подписаться</button>
+            <br>Вы подписаны на нашу новостную рассылку.
+            <br>Если Вы больше не хотите ее получать, то нажмите на кнопку.
+            <br><br>
             <button class="btn btn-secondary bg-light text-secondary mr-sm-2" name="action" value="unsubscribe">Отписаться</button>
         {% else %}
             <br>
-            Подпишитесь на рассылку, чтобы ничего не пропустить!
+            Подпишитесь на нашу новостную рассылку, чтобы ничего не пропустить!
             <br><br>
             <button class="btn btn-secondary bg-light text-secondary mr-sm-2" name="action" value="subscribe">Подписаться</button>
-            <button class="btn btn-secondary bg-light text-secondary mr-sm-2" disabled>Отписаться</button>
         {% endif %}
     </form>
-
-<!--        <form method = "POST" action="{% url 'subscriptions' %}" class="signup-form form-inline justify-content-center pt-3">-->
-<!--            {% csrf_token %}-->
-<!--            <button type="submit" class="btn btn-primary">Подписаться</button>-->
-<!--        </form>-->
-<!---->
-<!---->
+<br>
 {% endblock content %}

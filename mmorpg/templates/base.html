@@ -25,15 +25,15 @@
                 <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
+            <a class="nav-link" href="{% url 'responses' %}">Отклики
+                <span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item active">
             <a class="nav-link" href="{% url 'subscriptions' %}">Подписки
                 <span class="sr-only"></span></a>
         </li>
         {% endif %}
     </ul>
-<!--    <form class="form-inline my-2 my-lg-0">-->
-<!--      <input class="form-control mr-sm-2" type="search" placeholder="Введите текст" aria-label="Search">-->
-<!--      <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Поиск</button>-->
-<!--    </form>-->
         <div class="btn-group">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {% if user.is_authenticated %}
@@ -44,9 +44,6 @@
         </button>
             {% if user.is_authenticated %}
             <div class="dropdown-menu dropdown-menu-left">
-                <a class="dropdown-item" href="/ads/myads/">Мои объявления</a>
-                <a class="dropdown-item" href="/ads/responses/">Отклики</a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/accounts/logout/">Выйти</a>
             </div>
             {% else %}

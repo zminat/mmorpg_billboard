@@ -31,7 +31,7 @@
                     <hr>
                     <a href="/ads/{{ ad.id }}" style="font-size: 20px;"><b>{{ ad.title }}</b></a><br>
                     <span style="font-size: 12px;"><b>Автор:  {{ ad.author }} | Категория: {{ ad.get_category_display }} |
-                    Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.
+                    Дата публикации: {{ ad.dateCreation|date:'DATETIME_FORMAT' }}
                     {% if user.is_authenticated %}
                          |
                         {% if user == ad.author %}
@@ -73,4 +73,6 @@
         <!-- Если объявлений нет, говорим, что их нет -->
         <h3>Объявлений нет!</h3>
     {% endif %}
+<br>
+<br>
 {% endblock content %}

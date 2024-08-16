@@ -25,7 +25,7 @@ class Ad(models.Model):
     # upload = models.FileField(upload_to='uploads/', null=True, blank=True)
 
     def __str__(self):
-        return f'{self.title}: {self.text[:20]}'
+        return f'{self.title}'
 
     class Meta:
         verbose_name = 'Объявление'
@@ -36,11 +36,11 @@ class Ad(models.Model):
 
 
 class Response(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор отклика')
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='responses')
     text = models.TextField(verbose_name='Текст')
-    status = models.BooleanField(default=False)
-    dateCreation = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=False, verbose_name='Статус')
+    dateCreation = models.DateTimeField(auto_now_add=True, verbose_name='Дата отклика')
 
     def __str__(self):
         return f'{self.author}: {self.text}'

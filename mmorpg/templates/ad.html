@@ -9,7 +9,7 @@
     <h1>{{ ad.title }}</h1>
     <tr><span style="font-size: 12px;">
         <b>Автор:  {{ ad.author }} | Категория: {{ ad.get_category_display }} |
-        Дата публикации: {{ ad.dateCreation|date:'d.M.Y' }} г.</b></span><br><br></tr>
+        Дата публикации: {{ ad.dateCreation|date:'DATETIME_FORMAT' }}</b></span><br><br></tr>
     <tr>{{ ad.text|safe }}</tr>
     {% if user.is_authenticated %}
         {% if user == ad.author %}
@@ -50,4 +50,5 @@
             </form>
         {% endfor %}
     {% endif %}
+<br>
 {% endblock content %}

@@ -25,28 +25,6 @@ class AdsList(ListView):
     ordering = '-dateCreation'
     template_name = 'ads.html'
     context_object_name = 'ads'
-    paginate_by = 2
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        self.filterset = AdFilter(self.request.GET, queryset)
-        return self.filterset.qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['time_now'] = datetime.utcnow()
-        context['filterset'] = self.filterset
-        pprint(context)
-        return context
-
-
-class MyAdsList(LoginRequiredMixin, ListView):
-    raise_exception = True
-    permission_required = ('billboard.view_ad',)
-    model = Ad
-    ordering = '-dateCreation'
-    template_name = 'ads.html'
-    context_object_name = 'ads'
     paginate_by = 10
 
     def get_queryset(self):
@@ -56,7 +34,7 @@ class MyAdsList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_url_myads'] = self.request.path == '/ads/myads/'
+        context['time_now'] = datetime.utcnow()
         context['filterset'] = self.filterset
         pprint(context)
         return context
@@ -168,25 +146,7 @@ class MyResponsesList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_url_myads'] = self.request.path == '/ads/responses/'
-        context['filterset'] = self.filterset
-        return context
-
-
-class AdResponsesList(ListView):
-    raise_exception = True
-    model = Response
-    ordering = '-dateCreation'
-    template_name = 'ad_responses.html'
-    context_object_name = 'ad_responses'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        self.filterset = AdFilter(self.request.GET, queryset)
-        return self.filterset.qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context['responses'] = Response.objects.filter(ad__author__id=self.request.user.id)
         context['is_url_myads'] = self.request.path == '/ads/responses/'
         context['filterset'] = self.filterset
         return context
