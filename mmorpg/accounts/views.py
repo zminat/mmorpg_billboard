@@ -1,3 +1,5 @@
+import random
+
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
@@ -17,7 +19,7 @@ class SignUpView(CreateView):
         user = form.save(commit=False)
         user.is_active = False
         user.save()
-        user_verification = UserVerification.objects.create(user=user)
+        user_verification = UserVerification.objects.create(user=user, code=str(random.randint(1000, 9999)))
         messages.success(self.request, 'Вам на почту пришёл код подтверждения.')
 
         return redirect('verification', link_uuid=user_verification.link_uuid)

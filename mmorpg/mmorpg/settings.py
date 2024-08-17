@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'ckeditor_uploader',
     'crispy_forms',
+    'crispy_bootstrap4',
     'django_ckeditor_5',
     'django_filters',
     'django_apscheduler',
