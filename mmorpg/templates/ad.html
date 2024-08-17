@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% load crispy_forms_tags %}
 
 {% block title %}
-Объявление
+    Объявление
 {% endblock title %}
 
 {% block content %}
@@ -18,10 +19,10 @@
             <a class="btn btn-secondary bg-light text-secondary mr-sm-2"
                href="{% url 'ad_delete' ad.id %}" role="button">Удалить</a>
         {% else %}
-            <form action="" method="POST">
+            <form action="" method="POST" class="uniForm">
                 {% csrf_token %}
                 <input type="hidden" name="ad_id" value="{{ ad.id }}">
-                {{ response_form.as_p }}
+                {{ response_form|crispy }}
                 <input type="submit" class="btn mt-2 btn-comments" value="Откликнуться">
             </form>
         {% endif %}

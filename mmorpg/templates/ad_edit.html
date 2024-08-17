@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
 {% load crispy_forms_tags %}
 {% load static %}
-
 
 {% block content %}
     {% if user == ad_author or is_url_create %}
@@ -11,11 +10,10 @@
     {% else %}
         <h1> Редактировать "{{ ad.title }}" </h1>
     {% endif %}
-    <hr>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.media }}
-            {{ form.as_p }}
+            {{ form|crispy }}
             <input type="submit" value='Сохранить' />
         </form>
         <script src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>

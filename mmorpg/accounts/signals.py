@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
@@ -10,6 +9,14 @@ from mmorpg import settings
 
 @receiver(post_save, sender=UserVerification)
 def send_mail_on_user(sender, instance, created, **kwargs):
+    """
+    Sends an email to the user with a link and code to complete the registration process
+    :param sender: The UserVerification model class that triggered this signal.
+    :param instance: The actual instance of the UserVerification model that was saved.
+    :param created: A boolean indicating whether a new instance was created (True) or an existing instance was updated (False).
+    :param kwargs: Additional keyword arguments passed to the signal handler.
+    :return: None
+    """
     if created:
         subject = 'Код подтверждения регистрации'
         text = f'{instance.user.username}, закончите регистрацию на сайте.'

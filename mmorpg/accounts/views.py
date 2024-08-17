@@ -10,6 +10,7 @@ from .models import UserVerification
 
 
 class SignUpView(CreateView):
+    """Handles user registration by creating a new user account and initiating the email verification process"""
     model = User
     form_class = SignUpForm
     success_url = '/accounts/login'
@@ -26,6 +27,7 @@ class SignUpView(CreateView):
 
 
 class VerificationView(FormView):
+    """Handles the email verification process after a user signs up by validating a verification code"""
     model = UserVerification
     form_class = VerificationForm
     template_name = 'registration/verification.html'

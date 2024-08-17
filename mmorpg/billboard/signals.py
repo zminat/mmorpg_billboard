@@ -7,6 +7,14 @@ from billboard.models import Response
 
 @receiver(post_save, sender=Response)
 def send_mail_on_response(sender, instance, created, **kwargs):
+    """
+    Sends emails about a new response to the authors of the Ad and the responder.
+    :param sender: The Response model class that triggered this signal.
+    :param instance: The actual instance of the Response model that was saved.
+    :param created: A boolean indicating whether a new instance was created (True) or an existing instance was updated (False).
+    :param kwargs: Additional keyword arguments passed to the signal handler.
+    :return: None
+    """
     responder = instance.author
     ad = instance.ad
     if created:

@@ -5,6 +5,8 @@ from .models import Ad, Response
 
 
 class AdForm(forms.ModelForm):
+    """The Ad form."""
+
     class Meta:
         model = Ad
         fields = ('category', 'title', 'text',)
@@ -28,6 +30,8 @@ class AdForm(forms.ModelForm):
 
 
 class ResponseForm(forms.ModelForm):
+    """The Response form."""
+
     class Meta:
         model = Response
         fields = ('text',)

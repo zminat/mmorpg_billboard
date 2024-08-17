@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect
@@ -18,6 +17,7 @@ from pprint import pprint
 
 
 class AdsList(ListView):
+    """Displays a paginated list of all ads"""
     model = Ad
     ordering = '-dateCreation'
     template_name = 'ads.html'
@@ -38,6 +38,7 @@ class AdsList(ListView):
 
 
 class AdDetail(DetailView):
+    """Allows user to view ad details"""
     model = Ad
     template_name = 'ad.html'
     context_object_name = 'ad'
@@ -59,6 +60,7 @@ class AdDetail(DetailView):
 
 
 class AdCreate(LoginRequiredMixin, CreateView):
+    """Allows the logged-in user to create ad"""
     raise_exception = True
     permission_required = ('billboard.add_ad',)
     form_class = AdForm
@@ -79,6 +81,7 @@ class AdCreate(LoginRequiredMixin, CreateView):
 
 
 class AdUpdate(LoginRequiredMixin, UpdateView):
+    """Allows the logged-in user to update ad he has created"""
     raise_exception = True
     permission_required = ('billboard.change_ad',)
     form_class = AdForm
@@ -95,6 +98,7 @@ class AdUpdate(LoginRequiredMixin, UpdateView):
 
 
 class AdDelete(LoginRequiredMixin, DeleteView):
+    """Allows the logged-in user to delete ad he has created"""
     raise_exception = True
     permission_required = ('billboard.delete_ad',)
     model = Ad
@@ -108,6 +112,11 @@ class AdDelete(LoginRequiredMixin, DeleteView):
 
 
 class MyResponsesList(LoginRequiredMixin, ListView):
+    """
+    Displays a paginated list of responses authored by the currently logged-in user.
+    This view requires the user to be logged in and only shows responses where the
+    current user is the author of the associated ad.
+    """
     raise_exception = True
     model = Response
     ordering = '-dateCreation'
@@ -129,6 +138,11 @@ class MyResponsesList(LoginRequiredMixin, ListView):
 @login_required
 @csrf_protect
 def response_handle(request):
+    """
+    Action that handles approve and delete buttons of responses
+    :param request: the request to handle
+    :return: return an HttpResponseRedirect to the responses URL
+    """
     action = request.POST.get('action')
     if action == 'accept':
         response_id = request.POST.get('response_id')
@@ -146,6 +160,11 @@ def response_handle(request):
 @login_required
 @csrf_protect
 def subscriptions(request):
+    """
+    Handles subscription request
+    :param request: the request to handle
+    :return: return an HttpResponse whose content is filled with the result of subscribing
+    """
     user_subscribed = Subscription.objects.filter(user=request.user).count() != 0
     if request.method == 'POST':
         action = request.POST.get('action')

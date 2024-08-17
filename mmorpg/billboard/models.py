@@ -5,6 +5,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Ad(models.Model):
+    """Ad model"""
     CATEGORY_CHOICES = (
         ('TA', 'Танки'),
         ('HI', 'Хилы'),
@@ -31,10 +32,12 @@ class Ad(models.Model):
         verbose_name_plural = 'Объявления'
 
     def get_absolute_url(self):
+        """Getting the absolute URL of the particular Ad detail page"""
         return reverse('ad_detail', args=[str(self.id)])
 
 
 class Response(models.Model):
+    """Response model"""
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор отклика')
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name='responses')
     text = models.TextField(verbose_name='Текст')
@@ -50,4 +53,5 @@ class Response(models.Model):
 
 
 class Subscription(models.Model):
+    """Subscription model"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)

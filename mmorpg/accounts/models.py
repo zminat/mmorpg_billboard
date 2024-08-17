@@ -7,6 +7,7 @@ from django.db import models
 
 
 class UserVerification(models.Model):
+    """Stores verification data for a user, including a unique link and 4-digit verification code"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     link_uuid = models.UUIDField(
          default=uuid.uuid4

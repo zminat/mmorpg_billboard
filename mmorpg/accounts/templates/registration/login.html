@@ -15,7 +15,7 @@
             </ul>
         </div>
     {% endif %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <input class="btn btn-secondary" type="submit" value='Войти'>
     <input type="hidden" name="next" value="{{ next }}">
 </form>

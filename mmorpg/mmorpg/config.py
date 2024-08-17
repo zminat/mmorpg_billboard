@@ -1,1 +1,0 @@
-SECRETKEY = 'django-insecure-cazd24@f2#*!tf8%t-q+hxm$_7v*sw1%f1=dck^+-l2y4^@p@&'

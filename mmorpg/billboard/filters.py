@@ -1,18 +1,18 @@
-import django_filters
-from bootstrap4 import forms
 from django_filters import FilterSet, ModelChoiceFilter
 
 from .models import Ad, Response
 
 
 class AdFilter(FilterSet):
+    """Filters ads based on the selected author and category."""
 
-   class Meta:
+    class Meta:
        model = Ad
        fields = {'author', 'category'}
 
 
 class ResponseFilter(FilterSet):
+    """Filters responses based on the ads created by the author."""
     ad = ModelChoiceFilter(
         empty_label='все объявления',
         field_name='ad',

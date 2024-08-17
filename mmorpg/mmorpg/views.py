@@ -14,8 +14,6 @@ from django.http import JsonResponse
 from PIL import Image
 
 
-
-
 class NoImageException(Exception):
     pass
 
